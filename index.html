@@ -69,8 +69,6 @@
                 <textarea id="remark" placeholder="例如：紅包有特殊花紋、代他人贈送等" rows="3"></textarea>
             </div>
             
-            <!-- 已移除禮金金額輸入欄位 -->
-            
             <div>
                 <label style="display:block; margin-bottom:8px; font-weight:600; color:#555;"><i class="fas fa-camera"></i> 紅包照片（可選）</label>
                 <div class="upload-area" id="uploadArea">
@@ -104,8 +102,8 @@
     </footer>
 
     <script>
-        // 配置
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyaMclDUKWA9TH2f5sc7UpYg21HN95xZUtZw7uCjb5sj0iaDpyX6B9eY8CxmqV2oyeP/exec";
+        // 配置 - 使用最新的部署 ID
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzt4KG-R8LEsJrEcinoXM208uCDWPgeAsMHn6SUohdHOMontpyVc319Dw9PNcpwc10ykg/exec";
         const STORAGE_KEY = 'weddingRedPacketsPending';
         
         let pendingRecords = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
@@ -202,7 +200,7 @@
                 packetNumber: packetNumber,
                 guestName: guestName,
                 remark: document.getElementById('remark').value || '',
-                image: currentImage, // 可為 null
+                image: currentImage,
                 timestamp: new Date().toLocaleString('zh-HK'),
                 status: 'pending'
             };
@@ -213,10 +211,15 @@
             
             try {
                 if (isOnline) {
-                    await syncToGoogle(record);
-                    showStatus(`✅ 紅包 #${packetNumber} 已成功同步到 Google！`, 'success');
-                    record.status = 'synced';
-                    resetForm();
+                    const result = await syncToGoogle(record);
+                    
+                    if (result && result.success) {
+                        showStatus(`✅ 紅包 #${packetNumber} 已成功同步到 Google！`, 'success');
+                        record.status = 'synced';
+                        resetForm();
+                    } else {
+                        throw new Error(result?.message || '同步失敗');
+                    }
                 } else {
                     pendingRecords.push(record);
                     localStorage.setItem(STORAGE_KEY, JSON.stringify(pendingRecords));
@@ -224,6 +227,7 @@
                     resetForm();
                 }
             } catch (error) {
+                console.error('同步錯誤:', error);
                 record.status = 'failed';
                 pendingRecords.push(record);
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(pendingRecords));
@@ -242,17 +246,29 @@
                 packetNumber: record.packetNumber,
                 guestName: record.guestName,
                 remark: record.remark || '',
-                image: record.image // 可為 null
+                image: record.image
             };
             
-            await fetch(GOOGLE_SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(dataToSend)
-            });
-            
-            return { success: true };
+            try {
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(dataToSend)
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP 錯誤! 狀態: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                console.log('Google 回應:', result);
+                return result;
+            } catch (error) {
+                console.error('連接到 Google 時出錯:', error);
+                throw error;
+            }
         }
         
         function showStatus(message, type) {
@@ -341,9 +357,14 @@
                 const record = pendingRecords[i];
                 if (record.status === 'pending' || record.status === 'failed') {
                     try {
-                        await syncToGoogle(record);
-                        record.status = 'synced';
+                        const result = await syncToGoogle(record);
+                        if (result && result.success) {
+                            record.status = 'synced';
+                        } else {
+                            record.status = 'failed';
+                        }
                     } catch (error) {
+                        console.error('重試同步失敗:', error);
                         record.status = 'failed';
                     }
                 }
