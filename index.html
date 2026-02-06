@@ -418,7 +418,7 @@
                 <i class="fas fa-heart heart"></i>
             </div>
             <h1>～Jason & Lala Wedding～</h1>
-            <div class="wedding-subtitle">婚禮紅包記錄系統 v3</div>
+            <div class="wedding-subtitle">婚禮紅包記錄系統</div>
             <p class="subtitle">自動同步至 Google Drive 和 Google Sheets</p>
         </header>
         
@@ -475,7 +475,7 @@
                 <div class="form-group">
                     <label for="guestName"><i class="fas fa-user"></i> 賓客姓名 *</label>
                     <input type="text" id="guestName" required 
-                           placeholder="例如：張偉強 或 李美玲合家">
+                           placeholder="例如：張大明 或 李小美合家">
                 </div>
                 
                 <div class="form-group">
@@ -484,11 +484,7 @@
                               placeholder="例如：紅包有特殊花紋、代他人贈送等"></textarea>
                 </div>
                 
-                <div class="form-group">
-                    <label for="amount"><i class="fas fa-money-bill-wave"></i> 禮金金額 (HK$)</label>
-                    <input type="text" id="amount" 
-                           placeholder="稍後輸入（例如：1000）">
-                </div>
+                <!-- 已移除禮金金額欄位 -->
                 
                 <!-- 修改為可選的圖片上傳 -->
                 <div class="form-group">
@@ -629,7 +625,6 @@
             const packetNumber = document.getElementById('packetNumber').value;
             const guestName = document.getElementById('guestName').value;
             const remark = document.getElementById('remark').value;
-            const amount = document.getElementById('amount').value;
             
             if (!packetNumber || !guestName) {
                 showStatus('請填寫紅包編號和賓客姓名！', 'error');
@@ -642,7 +637,6 @@
                 packetNumber: packetNumber,
                 guestName: guestName,
                 remark: remark,
-                amount: amount,
                 timestamp: new Date().toLocaleString('zh-HK'),
                 status: 'pending'
             };
@@ -698,8 +692,7 @@
             const dataToSend = {
                 packetNumber: record.packetNumber,
                 guestName: record.guestName,
-                remark: record.remark || '',
-                amount: record.amount || ''
+                remark: record.remark || ''
             };
             
             // 如果有圖片才發送圖片
