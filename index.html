@@ -69,18 +69,15 @@
                 <textarea id="remark" placeholder="例如：紅包有特殊花紋、代他人贈送等" rows="3"></textarea>
             </div>
             
-            <div>
-                <label style="display:block; margin-bottom:8px; font-weight:600; color:#555;"><i class="fas fa-money-bill-wave"></i> 禮金金額 (HK$)</label>
-                <input type="text" id="amount" placeholder="稍後輸入（例如：1000）">
-            </div>
+            <!-- 已移除禮金金額輸入欄位 -->
             
             <div>
-                <label style="display:block; margin-bottom:8px; font-weight:600; color:#555;"><i class="fas fa-camera"></i> 紅包照片 *</label>
+                <label style="display:block; margin-bottom:8px; font-weight:600; color:#555;"><i class="fas fa-camera"></i> 紅包照片（可選）</label>
                 <div class="upload-area" id="uploadArea">
                     <div style="font-size:40px; color:#e53935; margin-bottom:15px;">
                         <i class="fas fa-camera"></i>
                     </div>
-                    <div style="color:#666; margin-bottom:10px; font-size:18px;">點擊上傳紅包照片</div>
+                    <div style="color:#666; margin-bottom:10px; font-size:18px;">點擊上傳紅包照片（可選）</div>
                     <div style="font-size:14px; color:#999;">建議先拍紅包上的鉛筆編號</div>
                     <input type="file" id="fileInput" accept="image/*" capture="environment" style="display:none;">
                 </div>
@@ -192,11 +189,6 @@
         }
         
         async function saveAndSyncRecord() {
-            if (!currentImage) {
-                showStatus('請上傳紅包照片！', 'error');
-                return;
-            }
-            
             const packetNumber = document.getElementById('packetNumber').value;
             const guestName = document.getElementById('guestName').value;
             
@@ -210,8 +202,7 @@
                 packetNumber: packetNumber,
                 guestName: guestName,
                 remark: document.getElementById('remark').value || '',
-                amount: document.getElementById('amount').value || '',
-                image: currentImage,
+                image: currentImage, // 可為 null
                 timestamp: new Date().toLocaleString('zh-HK'),
                 status: 'pending'
             };
@@ -251,8 +242,7 @@
                 packetNumber: record.packetNumber,
                 guestName: record.guestName,
                 remark: record.remark || '',
-                amount: record.amount || '',
-                image: record.image
+                image: record.image // 可為 null
             };
             
             await fetch(GOOGLE_SCRIPT_URL, {
