@@ -418,7 +418,7 @@
                 <i class="fas fa-heart heart"></i>
             </div>
             <h1>～Jason & Lala Wedding～</h1>
-            <div class="wedding-subtitle">婚禮紅包記錄系統</div>
+            <div class="wedding-subtitle">婚禮紅包記錄系統 v3</div>
             <p class="subtitle">自動同步至 Google Drive 和 Google Sheets</p>
         </header>
         
@@ -531,7 +531,7 @@
     </footer>
 
     <script>
-        // 配置 - 使用你的新 Web App URL
+        // 配置 - 使用你的 Web App URL
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzt4KG-R8LEsJrEcinoXM208uCDWPgeAsMHn6SUohdHOMontpyVc319Dw9PNcpwc10ykg/exec";
         const STORAGE_KEY = 'weddingRedPacketsPending';
         
@@ -624,7 +624,7 @@
             reader.readAsDataURL(file);
         }
         
-        // 保存並同步記錄 - 簡化版本
+        // 保存並同步記錄
         async function saveAndSyncRecord() {
             const packetNumber = document.getElementById('packetNumber').value;
             const guestName = document.getElementById('guestName').value;
@@ -707,10 +707,10 @@
                 dataToSend.image = record.image;
             }
             
-            // 使用你的新 Google Apps Script URL
+            // 使用 Google Apps Script URL
             const response = await fetch(GOOGLE_SCRIPT_URL, {
                 method: 'POST',
-                mode: 'no-cors',
+                mode: 'no-cors', // no-cors 模式繞過 CORS 檢查
                 headers: {
                     'Content-Type': 'application/json'
                 },
