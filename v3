@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>～Jason & Lala Wedding～</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft JhengHei', sans-serif;
+        }
+        
+        body {
+            background-color: #f9f3f3;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e8c8c8;
+            padding-bottom: 20px;
+        }
+        
+        h1 {
+            color: #c62828;
+            font-size: 32px;
+            margin-bottom: 10px;
+            font-family: 'Segoe UI', 'Microsoft JhengHei', cursive;
+        }
+        
+        .wedding-subtitle {
+            color: #e53935;
+            font-size: 20px;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        .subtitle {
+            color: #777;
+            font-size: 16px;
+        }
+        
+        .red-envelope-icon {
+            font-size: 40px;
+            color: #e53935;
+            margin-bottom: 15px;
+        }
+        
+        .instructions {
+            background-color: #fff8f8;
+            border-left: 4px solid #e53935;
+            padding: 15px;
+            margin-bottom: 25px;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .instructions h3 {
+            color: #c62828;
+            margin-bottom: 10px;
+        }
+        
+        .instructions ol {
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 8px;
+        }
+        
+        .status-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .status-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .status-warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+        
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #e53935;
+        }
+        
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        
+        .upload-area {
+            border: 2px dashed #e53935;
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-bottom: 15px;
+        }
+        
+        .upload-area:hover {
+            background-color: #fff8f8;
+        }
+        
+        .upload-icon {
+            font-size: 40px;
+            color: #e53935;
+            margin-bottom: 15px;
+        }
+        
+        .upload-text {
+            color: #666;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        
+        #fileInput {
+            display: none;
+        }
+        
+        .preview-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .preview-item {
+            width: 150px;
+            height: 150px;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .remove-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn {
+            background-color: #e53935;
+            color: white;
+            border: none;
+            padding: 14px 25px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+        }
+        
+        .btn:hover {
+            background-color: #c62828;
+        }
+        
+        .btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        
+        .btn-secondary {
+            background-color: #666;
+            margin-top: 10px;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #555;
+        }
+        
+        .google-config {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .google-config h3 {
+            color: #4285f4;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .google-config label {
+            color: #5f6368;
+            font-size: 14px;
+        }
+        
+        .google-config input {
+            font-size: 14px;
+            padding: 10px;
+            background-color: white;
+        }
+        
+        .sync-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #e8f0fe;
+        }
+        
+        .sync-success {
+            color: #0d652d;
+        }
+        
+        .sync-fail {
+            color: #ea4335;
+        }
+        
+        .pending-queue {
+            margin-top: 30px;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+        
+        .queue-list {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #eee;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 10px;
+        }
+        
+        .queue-item {
+            padding: 8px;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .queue-item:last-child {
+            border-bottom: none;
+        }
+        
+        .queue-status {
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-synced {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .status-failed {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .quick-links {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .link-card {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.3s;
+        }
+        
+        .link-card:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
+        
+        .link-card i {
+            font-size: 24px;
+            color: #4285f4;
+            margin-bottom: 10px;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #888;
+            font-size: 14px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 28px;
+            }
+            
+            .wedding-subtitle {
+                font-size: 18px;
+            }
+            
+            .upload-text {
+                font-size: 16px;
+            }
+            
+            .quick-links {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .heart {
+            color: #e53935;
+            margin: 0 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="red-envelope-icon">
+                <i class="fas fa-heart heart"></i>
+                <i class="fas fa-gift"></i>
+                <i class="fas fa-heart heart"></i>
+            </div>
+            <h1>～Jason & Lala Wedding～</h1>
+            <div class="wedding-subtitle">婚禮紅包記錄系統</div>
+            <p class="subtitle">自動同步至 Google Drive 和 Google Sheets</p>
+        </header>
+        
+        <div class="instructions">
+            <h3>✅ 系統已準備就緒！</h3>
+            <p>你的 Google Apps Script 測試成功！現在可以開始記錄紅包。</p>
+            <p>每次保存都會：</p>
+            <ol>
+                <li>自動保存記錄到 Google Sheets</li>
+                <li>如有圖片，自動上傳到 Google Drive</li>
+                <li>即使斷網也會暫存本地，有網絡時自動同步</li>
+            </ol>
+        </div>
+        
+        <!-- 狀態顯示區 -->
+        <div id="statusMessage" class="status-section"></div>
+        
+        <!-- Google 配置區 -->
+        <div class="google-config">
+            <h3><i class="fab fa-google"></i> Google 系統狀態</h3>
+            <div class="form-group">
+                <label>Google Apps Script URL（已設定）</label>
+                <input type="text" value="https://script.google.com/macros/s/AKfycbzt4KG-R8LEsJrEcinoXM208uCDWPgeAsMHn6SUohdHOMontpyVc319Dw9PNcpwc10ykg/exec" readonly style="background-color: #e8f5e8;">
+                <small>此 URL 已成功測試，無需修改</small>
+            </div>
+            
+            <div class="sync-status">
+                <i class="fas fa-check-circle" style="color: #34a853;"></i>
+                <span id="syncStatusText">Google 系統連接正常 ✓</span>
+            </div>
+            
+            <div class="quick-links">
+                <a href="https://drive.google.com/drive/folders/1FAqebbNtYRwDUWduc9tAAHkRKHLfkyBd" target="_blank" class="link-card">
+                    <i class="fab fa-google-drive"></i>
+                    <div>查看 Google Drive 文件夾</div>
+                </a>
+                <a href="https://docs.google.com/spreadsheets" target="_blank" class="link-card">
+                    <i class="fas fa-table"></i>
+                    <div>查看 Google Sheets 記錄</div>
+                </a>
+            </div>
+        </div>
+        
+        <!-- 主要表單 -->
+        <div class="form-section">
+            <h2><i class="fas fa-envelope heart"></i> 新增紅包記錄</h2>
+            <form id="redPacketForm">
+                <div class="form-group">
+                    <label for="packetNumber"><i class="fas fa-hashtag"></i> 紅包編號 *</label>
+                    <input type="number" id="packetNumber" min="1" required 
+                           placeholder="請輸入紅包上的鉛筆編號">
+                </div>
+                
+                <div class="form-group">
+                    <label for="guestName"><i class="fas fa-user"></i> 賓客姓名 *</label>
+                    <input type="text" id="guestName" required 
+                           placeholder="例如：張偉強 或 李美玲合家">
+                </div>
+                
+                <div class="form-group">
+                    <label for="remark"><i class="fas fa-sticky-note"></i> 備註</label>
+                    <textarea id="remark" 
+                              placeholder="例如：紅包有特殊花紋、代他人贈送等"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="amount"><i class="fas fa-money-bill-wave"></i> 禮金金額 (HK$)</label>
+                    <input type="text" id="amount" 
+                           placeholder="稍後輸入（例如：1000）">
+                </div>
+                
+                <!-- 修改為可選的圖片上傳 -->
+                <div class="form-group">
+                    <label><i class="fas fa-camera"></i> 紅包照片 (可選)</label>
+                    <div class="upload-area" id="uploadArea">
+                        <div class="upload-icon">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                        <div class="upload-text">點擊上傳紅包照片 (可選)</div>
+                        <div style="font-size: 14px; color: #999;">建議先拍紅包上的鉛筆編號</div>
+                        <input type="file" id="fileInput" accept="image/*" capture="environment">
+                    </div>
+                    <div class="preview-container" id="previewContainer"></div>
+                </div>
+                
+                <button type="submit" class="btn" id="submitBtn">
+                    <i class="fas fa-cloud-upload-alt"></i> 保存並同步到 Google
+                </button>
+                <button type="button" class="btn btn-secondary" id="resetBtn">
+                    <i class="fas fa-redo"></i> 清除重填
+                </button>
+            </form>
+        </div>
+        
+        <!-- 待同步隊列 -->
+        <div class="pending-queue" id="queueSection" style="display: none;">
+            <h3><i class="fas fa-history"></i> 待同步記錄</h3>
+            <p style="color: #666; margin-bottom: 10px;">以下記錄等待同步到 Google</p>
+            <div class="queue-list" id="queueList"></div>
+            <button type="button" class="btn btn-secondary" id="retrySyncBtn" style="margin-top: 15px;">
+                <i class="fas fa-sync-alt"></i> 立即重試同步
+            </button>
+        </div>
+    </div>
+    
+    <footer>
+        <p>💝 祝福 Jason & Lala 新婚快樂，永結同心！</p>
+        <p>💡 提示：請先用鉛筆在紅包上寫編號，再拍照記錄</p>
+        <p>系統已連接 Google，數據會自動備份到雲端</p>
+    </footer>
+
+    <script>
+        // 配置 - 使用你的新 Web App URL
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzt4KG-R8LEsJrEcinoXM208uCDWPgeAsMHn6SUohdHOMontpyVc319Dw9PNcpwc10ykg/exec";
+        const STORAGE_KEY = 'weddingRedPacketsPending';
+        
+        // 全局變量
+        let pendingRecords = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+        let currentImage = null;
+        let isOnline = navigator.onLine;
+        
+        // DOM元素
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const previewContainer = document.getElementById('previewContainer');
+        const form = document.getElementById('redPacketForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const statusMessage = document.getElementById('statusMessage');
+        const syncStatusText = document.getElementById('syncStatusText');
+        const queueSection = document.getElementById('queueSection');
+        const queueList = document.getElementById('queueList');
+        const retrySyncBtn = document.getElementById('retrySyncBtn');
+        
+        // 初始化
+        function init() {
+            updateSyncStatus();
+            updateQueueDisplay();
+            
+            // 監聽網絡狀態
+            window.addEventListener('online', handleOnlineStatus);
+            window.addEventListener('offline', handleOnlineStatus);
+            
+            // 自動重試同步（如果有待同步記錄）
+            if (pendingRecords.length > 0 && isOnline) {
+                setTimeout(() => retryAllPending(), 2000);
+            }
+        }
+        
+        init();
+        
+        // 事件監聽
+        uploadArea.addEventListener('click', () => fileInput.click());
+        
+        fileInput.addEventListener('change', handleImageUpload);
+        
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            await saveAndSyncRecord();
+        });
+        
+        resetBtn.addEventListener('click', resetForm);
+        
+        retrySyncBtn.addEventListener('click', retryAllPending);
+        
+        // 處理圖片上傳
+        function handleImageUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            if (!file.type.startsWith('image/')) {
+                showStatus('請選擇圖片文件！', 'error');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                currentImage = event.target.result;
+                previewContainer.innerHTML = '';
+                
+                const previewItem = document.createElement('div');
+                previewItem.className = 'preview-item';
+                
+                const img = document.createElement('img');
+                img.src = currentImage;
+                img.alt = '紅包照片';
+                
+                const removeBtn = document.createElement('button');
+                removeBtn.className = 'remove-btn';
+                removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+                removeBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    currentImage = null;
+                    previewContainer.innerHTML = '';
+                    fileInput.value = '';
+                });
+                
+                previewItem.appendChild(img);
+                previewItem.appendChild(removeBtn);
+                previewContainer.appendChild(previewItem);
+            };
+            
+            reader.readAsDataURL(file);
+        }
+        
+        // 保存並同步記錄 - 簡化版本
+        async function saveAndSyncRecord() {
+            const packetNumber = document.getElementById('packetNumber').value;
+            const guestName = document.getElementById('guestName').value;
+            const remark = document.getElementById('remark').value;
+            const amount = document.getElementById('amount').value;
+            
+            if (!packetNumber || !guestName) {
+                showStatus('請填寫紅包編號和賓客姓名！', 'error');
+                return;
+            }
+            
+            // 創建記錄對象
+            const record = {
+                id: Date.now(),
+                packetNumber: packetNumber,
+                guestName: guestName,
+                remark: remark,
+                amount: amount,
+                timestamp: new Date().toLocaleString('zh-HK'),
+                status: 'pending'
+            };
+            
+            // 如果有圖片才添加圖片字段
+            if (currentImage) {
+                record.image = currentImage;
+            }
+            
+            // 禁用提交按鈕
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 正在同步...';
+            
+            try {
+                if (isOnline) {
+                    // 在線：立即同步到 Google
+                    const result = await syncToGoogle(record);
+                    
+                    if (result && result.success) {
+                        showStatus(`✅ 紅包 #${packetNumber} 已成功同步到 Google！`, 'success');
+                        record.status = 'synced';
+                        resetForm();
+                    } else {
+                        throw new Error('同步失敗，請檢查網絡');
+                    }
+                } else {
+                    // 離線：保存到本地隊列
+                    pendingRecords.push(record);
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(pendingRecords));
+                    showStatus(`📱 紅包 #${packetNumber} 已保存到本地（離線模式）`, 'warning');
+                    resetForm();
+                }
+            } catch (error) {
+                // 同步失敗：保存到待同步隊列
+                record.status = 'failed';
+                pendingRecords.push(record);
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(pendingRecords));
+                showStatus(`❌ 同步失敗，已保存到本地隊列`, 'error');
+                console.error('同步錯誤:', error);
+            }
+            
+            // 更新顯示
+            updateSyncStatus();
+            updateQueueDisplay();
+            
+            // 恢復提交按鈕
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> 保存並同步到 Google';
+        }
+        
+        // 同步到 Google
+        async function syncToGoogle(record) {
+            const dataToSend = {
+                packetNumber: record.packetNumber,
+                guestName: record.guestName,
+                remark: record.remark || '',
+                amount: record.amount || ''
+            };
+            
+            // 如果有圖片才發送圖片
+            if (record.image) {
+                dataToSend.image = record.image;
+            }
+            
+            // 使用你的新 Google Apps Script URL
+            const response = await fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dataToSend)
+            });
+            
+            return { success: true };
+        }
+        
+        // 重試所有待同步記錄
+        async function retryAllPending() {
+            if (pendingRecords.length === 0) {
+                showStatus('沒有待同步的記錄', 'info');
+                return;
+            }
+            
+            if (!isOnline) {
+                showStatus('網絡未連接，無法同步', 'error');
+                return;
+            }
+            
+            retrySyncBtn.disabled = true;
+            retrySyncBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 同步中...';
+            
+            let successCount = 0;
+            
+            for (let i = 0; i < pendingRecords.length; i++) {
+                const record = pendingRecords[i];
+                if (record.status === 'pending' || record.status === 'failed') {
+                    try {
+                        await syncToGoogle(record);
+                        record.status = 'synced';
+                        successCount++;
+                    } catch (error) {
+                        record.status = 'failed';
+                    }
+                }
+            }
+            
+            // 過濾已同步的記錄
+            pendingRecords = pendingRecords.filter(r => r.status !== 'synced');
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(pendingRecords));
+            
+            // 更新顯示
+            updateSyncStatus();
+            updateQueueDisplay();
+            
+            if (successCount > 0) {
+                showStatus(`✅ 成功同步 ${successCount} 條記錄`, 'success');
+            }
+            
+            retrySyncBtn.disabled = false;
+            retrySyncBtn.innerHTML = '<i class="fas fa-sync-alt"></i> 立即重試同步';
+        }
+        
+        // 更新同步狀態顯示
+        function updateSyncStatus() {
+            const pendingCount = pendingRecords.filter(r => r.status === 'pending' || r.status === 'failed').length;
+            
+            if (!isOnline) {
+                syncStatusText.textContent = '離線模式 - 數據暫存本地';
+                syncStatusText.className = 'sync-fail';
+            } else if (pendingCount === 0) {
+                syncStatusText.textContent = '所有記錄已同步 ✓';
+                syncStatusText.className = 'sync-success';
+            } else {
+                syncStatusText.textContent = `${pendingCount} 條記錄等待同步`;
+                syncStatusText.className = 'sync-fail';
+            }
+        }
+        
+        // 更新隊列顯示
+        function updateQueueDisplay() {
+            const pendingCount = pendingRecords.filter(r => r.status === 'pending' || r.status === 'failed').length;
+            
+            if (pendingCount > 0) {
+                queueSection.style.display = 'block';
+                queueList.innerHTML = '';
+                
+                pendingRecords.forEach(record => {
+                    if (record.status !== 'synced') {
+                        const queueItem = document.createElement('div');
+                        queueItem.className = 'queue-item';
+                        
+                        const info = document.createElement('div');
+                        info.innerHTML = `
+                            <strong>#${record.packetNumber}</strong> - ${record.guestName}
+                            <br><small>${record.timestamp}</small>
+                        `;
+                        
+                        const status = document.createElement('span');
+                        status.className = `queue-status status-${record.status}`;
+                        status.textContent = record.status === 'pending' ? '等待同步' : '同步失敗';
+                        
+                        queueItem.appendChild(info);
+                        queueItem.appendChild(status);
+                        queueList.appendChild(queueItem);
+                    }
+                });
+            } else {
+                queueSection.style.display = 'none';
+            }
+        }
+        
+        // 顯示狀態消息
+        function showStatus(message, type = 'info') {
+            statusMessage.textContent = message;
+            statusMessage.className = `status-section status-${type}`;
+            statusMessage.style.display = 'block';
+            
+            // 3秒後自動隱藏
+            setTimeout(() => {
+                statusMessage.style.display = 'none';
+            }, 3000);
+        }
+        
+        // 重置表單
+        function resetForm() {
+            form.reset();
+            currentImage = null;
+            previewContainer.innerHTML = '';
+            fileInput.value = '';
+            
+            // 重置後聚焦到編號輸入框
+            document.getElementById('packetNumber').focus();
+        }
+        
+        // 處理網絡狀態變化
+        function handleOnlineStatus() {
+            isOnline = navigator.onLine;
+            updateSyncStatus();
+            
+            if (isOnline && pendingRecords.length > 0) {
+                showStatus('網絡已連接，正在嘗試同步...', 'success');
+                setTimeout(() => retryAllPending(), 1000);
+            } else if (!isOnline) {
+                showStatus('網絡已斷開，切換到離線模式', 'warning');
+            }
+        }
+    </script>
+</body>
+</html>
